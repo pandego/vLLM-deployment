@@ -4,6 +4,10 @@ Quick tuto to deploy a vLLM instance using the Mistral Docker Image.
 ## Deploy it!
 ```bash
 docker compose up --build
+
+# Run these steps if you run into:
+--> [AttributeError: 'CompletionResponse' object has no attribute 'model_dump'] <--
+
 docker exec -it mistral-src_instance pip uninstall pydantic  # 2x times if necessary!
 docker exec -it mistral-src_instance pip install pydantic
 docker compose up -d
