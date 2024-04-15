@@ -7,7 +7,7 @@ services:
     ipc: "host"
 
     env_file:
-      - .env
+      - .defaultenv
 
     volumes:
       - /data/vLLM_deployment/data:/app/data
