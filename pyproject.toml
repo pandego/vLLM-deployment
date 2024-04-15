@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "vllm-deployment"
+version = "0.1.0"
+description = "Simple project to get vLLM server running."
+authors = ["Miguel Dias <miguel.dias@acc-emotion.com>"]
+license = "ACC - Automotive Cells Company"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = "0.1.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
