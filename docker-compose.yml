@@ -1,0 +1,48 @@
+services:
+
+  mistral-src:
+    # build: .
+    image: ghcr.io/mistralai/mistral-src/vllm:latest
+    container_name: mistral-src_instance
+    ipc: "host"
+
+    env_file:
+      - .env
+
+    volumes:
+      - /data/vLLM_deployment/data:/app/data
+      - /data/vLLM_deployment/repo/apex:/workspace/apex
+      - /data/vLLM_deployment/logs:/app/logs
+      - /data/vLLM_deployment/models:/root/.cache/huggingface/hub
+
+    restart: always
+
+    ports:
+      - "11435:8000"
+
+    command: [
+      "--host", "0.0.0.0", "--port", "8000",
+      "--gpu-memory-utilization", "0.9",
+      "--max-model-len", "30000",
+      "--model", "mistralai/Mistral-7B-Instruct-v0.2"  # "facebook/opt-125m"
+    ]
+    # command: [
+    #   "--host", "0.0.0.0", "--port", "8000",
+    #   "--model", "mistralai/Mixtral-8x7B-Instruct-v0.1",
+    #   "--tensor-parallel-size", "2",  # adapt to your GPUs
+    #   "--load-format", "pt"  # needed since both `pt` and `safetensors` are available
+    # ]
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: [ "1", "2" ]
+              capabilities: [gpu]
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
