@@ -7,7 +7,7 @@ Quick tuto to deploy a vLLM instance using the [Official Docker Image](https://h
 - GPU (Nvidia)
 
 # Environment
-If you are going to using Python to with vLLM, it's best practice to set a dedicated environment. You can follow the following steps to set your Python environment. This was testing on **Ubuntu only**, but it should work well on **MacOS** and **Windows WSL**.
+If you are going to using Python with vLLM, it's best practice to set a dedicated environment. You can follow the following steps to set your Python environment. This was testing on **Ubuntu only**, but it should work well on **MacOS** and **Windows WSL**.
 - Clone this repo:
     ```bash
     git clone https://github.com/pandego/vLLM-deployment.git
