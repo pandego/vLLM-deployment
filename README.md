@@ -7,7 +7,7 @@ Quick tuto to deploy a vLLM instance using the [Official Docker Image](https://h
 - GPU (Nvidia)
 
 # Environment
-This was testing on **Ubuntu only**, but it should work well on **MacOS** and **Windows WSL**.
+If you are going to using Python to with vLLM, it's best practice to set a dedicated environment. You can follow the following steps to set your Python environment. This was testing on **Ubuntu only**, but it should work well on **MacOS** and **Windows WSL**.
 - Clone this repo:
     ```bash
     git clone https://github.com/pandego/vLLM-deployment.git
@@ -38,7 +38,7 @@ This was testing on **Ubuntu only**, but it should work well on **MacOS** and **
     ```bash
     docker compose up --build -d
     ```
-### ... using Python
+### ... using ***Python***!
 
 ```bash
 python -m vllm.entrypoints.openai.api_server \
@@ -53,7 +53,7 @@ python -m vllm.entrypoints.openai.api_server \
         curl http://localhost:11435/v1/completions \
             -H "Content-Type: application/json" \
             -d '{
-                "model": "mistralai/Mistral-7B-Instruct-v0.2",
+                "model": "NousResearch/Meta-Llama-3-8B-Instruct",
                 "prompt": "San Francisco is a",
                 "max_tokens": 7,
                 "temperature": 0
@@ -64,7 +64,7 @@ python -m vllm.entrypoints.openai.api_server \
         curl http://localhost:11435/v1/chat/completions \
             -H "Content-Type: application/json" \
             -d '{
-                "model": "mistralai/Mistral-7B-Instruct-v0.2",
+                "model": "NousResearch/Meta-Llama-3-8B-Instruct",
                 "messages": [
                     {"role": "system", "content": "You are a helpful assistant."},
                     {"role": "user", "content": "Who won the world series in 2020?"}
@@ -74,15 +74,14 @@ python -m vllm.entrypoints.openai.api_server \
 
 
 ### ... using  ***Python***!
-- 
+- Run the following command to test the deployed vLLM endpoint:
     ```bash
-    python -u -m vllm.entrypoints.openai.api_server \
-        --host 0.0.0.0 \
-        --port 11435 \
-        --model mistralai/Mistral-7B-Instruct-v0.2 \
-        --max-model-len 30000
+    python example.py
     ```
 
+*Et Voilà !* 🎈
+
+---
 
 ## Need more info?
 - You can check some more arguments in the `helper_args.json` file.
