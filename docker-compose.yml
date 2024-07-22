@@ -1,0 +1,51 @@
+services:
+  vllm:
+    image: vllm/vllm-openai:v${VLLM_VERSION}  # use the version from env
+    container_name: vllm
+    ipc: "host"
+
+    environment:
+      HUGGING_FACE_HUB_TOKEN: ${HUGGING_FACE_HUB_TOKEN}
+      HF_MODEL: ${HF_MODEL}
+      HF_CACHE_DIR: ${HF_CACHE_DIR}
+      VLLM_PORT: ${VLLM_PORT}
+      VLLM_HOST: ${VLLM_HOST}
+      GPU_PERCENTAGE: ${GPU_PERCENTAGE}
+      MAX_MODEL_LEN: ${MAX_MODEL_LEN}
+
+    volumes:
+      - ${HF_CACHE_DIR}:/root/.cache/huggingface/hub
+
+    restart: always
+
+    ports:
+      - "${VLLM_PORT}:8000"
+
+    command: [
+      "--host", "${VLLM_HOST}", "--port", "8000",
+      "--gpu-memory-utilization", "${GPU_PERCENTAGE}",
+      "--max-model-len", "${MAX_MODEL_LEN}",
+      "--model", "${HF_MODEL}"
+    ]
+    
+    # command: [
+    #   "--host", "0.0.0.0", "--port", "8000",
+    #   "--model", "mistralai/Mixtral-8x7B-Instruct-v0.1",
+    #   "--tensor-parallel-size", "2",  # adapt to your GPUs
+    #   "--load-format", "pt"  # needed since both `pt` and `safetensors` are available
+    # ]
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: [ "1", "2" ]
+              capabilities: [gpu]
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${VLLM_HOST}:8000/health/"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 20s

@@ -30,19 +30,19 @@ If you are going to using Python with vLLM, it's best practice to set a dedicate
 #### The `.env` File
 - Let's keep things clean. So first, copy `default.env` into `.env`:
   ```bash
-  mv default.env .env
+  cp default.env .env
   ```
 - You might need to edit the contents of the `.env` file with your HuggingFace Token
 
 - Deploy you container:
     ```bash
-    docker compose up --build -d
+    docker compose --env-file .env up -d --build -d
     ```
 ### ... using ***Python***!
 
 ```bash
 python -m vllm.entrypoints.openai.api_server \
-            --model NousResearch/Meta-Llama-3-8B-Instruct --dtype auto --api-key token-abc123
+            --model NousResearch/Meta-Llama-3-8B-Instruct --dtype auto --api-key EMPTY
 ```
 
 ## Test it...
@@ -74,10 +74,15 @@ python -m vllm.entrypoints.openai.api_server \
 
 
 ### ... using  ***Python***!
-- Run the following command to test the deployed vLLM endpoint:
-    ```bash
-    python example.py
-    ```
+- Run the following commands to test the deployed vLLM endpoint:
+    - `LangChain` example:
+        ```bash
+        python vLLM_example_LangChain.py
+        ```
+    - `OpenAI` example:
+        ```bash
+        python vLLM_example_OpenAI.py
+        ```
 
 *Et Voilà !* 🎈
 
